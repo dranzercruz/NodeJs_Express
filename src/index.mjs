@@ -4,6 +4,13 @@ const app = express();
 
 app.use(express.json());
 
+const loggingMiddleware = (request,response, next) =>{
+    console.log(`${request.method} - ${request.url}`);
+    next();
+};
+
+app.use(loggingMiddleware);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, ()=>{
@@ -20,7 +27,9 @@ const mockUsers =[
     {id :7, username: "eqsw", displayName:"midfb"},
 ]
 
-app.get("/", (request, response) =>{
+app.get("/",(request,response,next)=>{
+    next();
+}, (request, response) =>{
     response.status(201).send({mes: "hello"});
 });
 
